@@ -13,6 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
@@ -32,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
 
         // Set up the dropdown list navigation in the action bar.
         actionBar.setListNavigationCallbacks(
@@ -105,6 +111,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+//        private LView
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -120,14 +128,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+//            ListView taskListView = (ListView) rootView.findViewById(R.id.taskListView);
+//            String[] from = new String[]{"name", "id"};
+//            int[] to = new int[]{ R.id.taskNameText, R.id.taskIdText };
+//            CursorAdapter itemAdapter = new SimpleCursorAdapter(MainActivity.this, R.layout.task_view, null, from, to, 0);
+//            ListAdapter adapter = new SimpleAdapter();
+////            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+////            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+//            return rootView;
+//        }
     }
 
 }
