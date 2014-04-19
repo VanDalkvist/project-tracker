@@ -5,12 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
-    <TextView android:id="@+id/taskNameText"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
 
-    <TextView android:id="@+id/taskIdText"
-        android:layout_height="wrap_content"
+    <CheckBox
         android:layout_width="wrap_content"
-        android:paddingLeft="60dp"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/taskState" />
+
+    <TextView
+        android:id="@+id/taskNameText"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+    <TextView
+        android:id="@+id/timeSpent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/percentageComplete" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
 </LinearLayout>

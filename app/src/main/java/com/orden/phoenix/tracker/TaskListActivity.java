@@ -1,23 +1,17 @@
 package com.orden.phoenix.tracker;
 
 import android.app.ListActivity;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.Adapter;
-import android.widget.CursorAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+
+import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +26,7 @@ public class TaskListActivity extends ListActivity {
         array.add("test1");
         array.add("test2");
         array.add("test3");
-        ListAdapter itemAdapter = new CustomAdapter(this, R.layout.task_view, array);
+        ListAdapter itemAdapter = new TaskAdapter(this, R.layout.task_view, array);
         taskListView.setAdapter(itemAdapter);
     }
 
