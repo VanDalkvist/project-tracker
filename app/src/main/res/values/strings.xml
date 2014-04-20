@@ -10,5 +10,6 @@
     <string name="removeTask">Remove22</string>
     <string name="title_activity_task_list">TaskListActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
 
 </resources>
