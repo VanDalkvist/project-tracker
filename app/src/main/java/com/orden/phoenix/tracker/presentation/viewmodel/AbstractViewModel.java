@@ -13,7 +13,7 @@ public abstract class AbstractViewModel implements Editable {
 
     protected <T> void setIfChanged(T value, String propertyName) {
         try {
-            Field field = this.getClass().getField(propertyName);
+            Field field = this.getClass().getDeclaredField(propertyName);
             if (Utils.equals((T) field.get(this), value)) {
                 return;
             }

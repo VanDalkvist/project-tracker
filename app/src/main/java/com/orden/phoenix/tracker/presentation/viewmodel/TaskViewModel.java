@@ -10,13 +10,13 @@ import java.util.List;
  * Created on 4/19/14.
  */
 public class TaskViewModel extends AbstractViewModel {
-    private String name;
-    private String description;
-    private long estimate;
-    private List<TimeIntervalModel> activityIntervals;
-    private List<String> tags;
-    private List<NoteModel> notes;
-    private TaskState state;
+    protected String name;
+    protected String description;
+    protected long estimate;
+    protected List<TimeIntervalModel> activityIntervals;
+    protected List<String> tags;
+    protected List<NoteModel> notes;
+    protected TaskState state;
 
     public TaskViewModel() {
     }

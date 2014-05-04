@@ -14,6 +14,4 @@ public class Utils {
         }
         return first.equals(second);
     }
-
-
 }
