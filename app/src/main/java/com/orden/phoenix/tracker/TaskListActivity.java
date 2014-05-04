@@ -16,6 +16,7 @@ import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeIntervalModel;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
+import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,12 @@ public class TaskListActivity extends ListActivity implements ActionBar.OnNaviga
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        Init();
+    }
+
+    private void Init() {
         List<TaskViewModel> items = new ArrayList<TaskViewModel>();
 
         items.add(getDefaultTaskViewModel("name 1"));

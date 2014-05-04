@@ -1,6 +1,6 @@
 package com.orden.phoenix.tracker.presentation.viewmodel;
 
-import com.orden.phoenix.tracker.utils.Utils;
+import com.orden.phoenix.tracker.utils.Extensions;
 
 import java.lang.reflect.Field;
 
@@ -14,7 +14,7 @@ public abstract class AbstractViewModel implements Editable {
     protected <T> void setIfChanged(T value, String propertyName) {
         try {
             Field field = this.getClass().getDeclaredField(propertyName);
-            if (Utils.equals((T) field.get(this), value)) {
+            if (Extensions.equals((T) field.get(this), value)) {
                 return;
             }
             field.set(this, value);

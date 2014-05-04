@@ -3,7 +3,7 @@ package com.orden.phoenix.tracker.utils;
 /**
  * Created on 4/19/14.
  */
-public class Utils {
+public class Extensions {
 
     public static <K, V> boolean equals(K first, V second) {
         if (first == null) {
