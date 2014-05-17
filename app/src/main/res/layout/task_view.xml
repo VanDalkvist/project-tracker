@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:gravity="center"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+    <View
+        android:id="@+id/treeSpacerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -24,6 +33,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/percentageComplete" />
+        android:id="@+id/percentageComplete"/>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <com.orden.phoenix.tracker.presentation.view.TriangleView
+        android:id="@+id/expandIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:direction="east"
+        app:color="@color/taskArrowColor"
+        app:size="@dimen/taskListItemTriangleSize"
+        android:minWidth="@dimen/taskListItemTriangleSize"
+        android:minHeight="@dimen/taskListItemTriangleSize"/>
 </LinearLayout>

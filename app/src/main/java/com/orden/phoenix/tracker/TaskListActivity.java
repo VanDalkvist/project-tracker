@@ -1,14 +1,9 @@
 package com.orden.phoenix.tracker;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.orden.phoenix.tracker.model.TaskState;
@@ -20,40 +15,51 @@ import com.orden.phoenix.tracker.utils.ExceptionHandler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
-public class TaskListActivity extends ListActivity {
+public class TaskListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_task_list);
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-
-        Init();
+        init();
     }
 
-    private void Init() {
+    private void init() {
         List<TaskViewModel> items = new ArrayList<TaskViewModel>();
 
-        items.add(getDefaultTaskViewModel("name 1"));
-        items.add(getDefaultTaskViewModel("name 2"));
-        items.add(getDefaultTaskViewModel("name 3"));
+        TaskAdapter itemAdapter = new TaskAdapter(this, R.layout.task_view, items);
 
-        ListAdapter itemAdapter = new TaskAdapter(this, R.layout.task_view, items);
+        items.add(getDefaultTaskViewModel("name 1", itemAdapter, 3, 4));
+        items.add(getDefaultTaskViewModel("name 2", itemAdapter, 3, 4));
+        items.add(getDefaultTaskViewModel("name 3", itemAdapter, 3, 4));
 
-        ListView taskListView = getListView();
+        ListView taskListView = (ListView)findViewById(R.id.taskListView);
         taskListView.setAdapter(itemAdapter);
     }
 
-    private TaskViewModel getDefaultTaskViewModel(String name) {
-        TaskViewModel viewModel = new TaskViewModel();
+    /**
+     * test method
+     */
+    private TaskViewModel getDefaultTaskViewModel(String name, TaskAdapter adapter, int childMax, int depth) {
+        TaskViewModel viewModel = new TaskViewModel(adapter);
         viewModel.setName(name);
         viewModel.setState(TaskState.CREATED);
-        viewModel.setActivityIntervals(GetStartIntervals());
+        viewModel.setActivityIntervals(getStartIntervals());
+        int childCount = new Random().nextInt(childMax);
+        for(int i = 0; i < childCount && depth > 0; i++) {
+            viewModel.addChild(getDefaultTaskViewModel(name + depth, adapter, childMax, depth - 1));
+        }
         return viewModel;
     }
 
-    private ArrayList<TimeIntervalModel> GetStartIntervals() {
+    /**
+     * test method
+     */
+    private ArrayList<TimeIntervalModel> getStartIntervals() {
         ArrayList<TimeIntervalModel> activityIntervals = new ArrayList<TimeIntervalModel>();
         TimeIntervalModel interval = new TimeIntervalModel();
         interval.setFrom(new Date());
@@ -79,20 +85,5 @@ public class TaskListActivity extends ListActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
-            return rootView;
-        }
     }
 }

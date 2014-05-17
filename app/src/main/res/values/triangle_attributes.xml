@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TriangleView">
+        <attr name="direction" format="integer">
+            <enum name="north" value="0"/>
+            <enum name="south" value="180"/>
+            <enum name="east" value="90"/>
+            <enum name="west" value="-90"/>
+        </attr>
+        <attr name="color" format="color"/>
+        <attr name="size" format="dimension"/>
+    </declare-styleable>
+</resources>

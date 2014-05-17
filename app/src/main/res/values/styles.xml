@@ -5,4 +5,6 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <color name="transparent">#00000000</color>
+    <color name="taskArrowColor">#333333</color>
 </resources>

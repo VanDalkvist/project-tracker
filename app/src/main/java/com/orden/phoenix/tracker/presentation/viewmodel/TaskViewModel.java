@@ -3,7 +3,10 @@ package com.orden.phoenix.tracker.presentation.viewmodel;
 import com.orden.phoenix.tracker.model.NoteModel;
 import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeIntervalModel;
+import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,8 +20,13 @@ public class TaskViewModel extends AbstractViewModel {
     protected List<String> tags;
     protected List<NoteModel> notes;
     protected TaskState state;
+    protected TaskViewItemState viewState = TaskViewItemState.COLLAPSED;
+    protected TaskAdapter adapter;
+    protected TaskViewModel parent;
+    protected List<TaskViewModel> children = new ArrayList<TaskViewModel>();
 
-    public TaskViewModel() {
+    public TaskViewModel(TaskAdapter adapter) {
+        this.adapter = adapter;
     }
 
     public long getTimeSpent() {
@@ -27,6 +35,18 @@ public class TaskViewModel extends AbstractViewModel {
             result += item.getDifference();
         }
         return result;
+    }
+
+    public int getDepth() {
+        return parent != null ? parent.getDepth() + 1  : 0;
+    }
+
+    public void collapse() {
+        viewState.onCollapse(this, adapter);
+    }
+
+    public void expand() {
+        viewState.onExpand(this, adapter);
     }
 
     public TaskState getState() {
@@ -87,5 +107,36 @@ public class TaskViewModel extends AbstractViewModel {
 
     public void setNotes(List<NoteModel> notes) {
         setIfChanged(notes, "notes");
+    }
+
+    public TaskViewItemState getViewState() {
+        return viewState;
+    }
+
+    public void setViewState(TaskViewItemState viewState) {
+        setIfChanged(viewState, "viewState");
+    }
+
+    public TaskAdapter getAdapter() {
+        return adapter;
+    }
+
+
+
+    public void addChild(TaskViewModel child) {
+        children.add(child);
+        child.setParent(this);
+    }
+
+    public List<TaskViewModel> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+
+    public TaskViewModel getParent() {
+        return parent;
+    }
+
+    public void setParent(TaskViewModel parent) {
+        setIfChanged(parent, "parent");
     }
 }
