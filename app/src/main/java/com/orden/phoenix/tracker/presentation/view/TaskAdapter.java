@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.orden.phoenix.tracker.R;
+import com.orden.phoenix.tracker.presentation.behavior.SwitchChangeStateBehavior;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewItemState;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 
@@ -26,7 +27,7 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final TaskViewModel item = getItem(position);
         TaskViewHolder viewHolder;
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.task_view, parent, false);
             viewHolder = new TaskViewHolder(
                     convertView.findViewById(R.id.treeSpacerView),
@@ -46,11 +47,9 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
         viewHolder.getExpandIcon().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(item.getViewState() == TaskViewItemState.COLLAPSED) {
-                    item.expand();
-                } else {
-                    item.collapse();
-                }
+                // todo: configure ChangeStateBehavior in config;
+                TaskViewItemState newState = new SwitchChangeStateBehavior().change(item.getViewState());
+                item.changeState(newState);
             }
         });
         viewHolder.getExpandIcon().setDirection(item.getViewState() == TaskViewItemState.COLLAPSED ? TriangleView.Direction.WEST : TriangleView.Direction.SOUTH);

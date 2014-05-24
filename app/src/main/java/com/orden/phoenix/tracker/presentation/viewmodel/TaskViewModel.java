@@ -38,15 +38,13 @@ public class TaskViewModel extends AbstractViewModel {
     }
 
     public int getDepth() {
-        return parent != null ? parent.getDepth() + 1  : 0;
+        return parent != null ? parent.getDepth() + 1 : 0;
     }
 
-    public void collapse() {
-        viewState.onCollapse(this, adapter);
-    }
+    public void changeState(TaskViewItemState state) {
+        viewState.onChangeState(this, adapter);
 
-    public void expand() {
-        viewState.onExpand(this, adapter);
+        this.setViewState(state);
     }
 
     public TaskState getState() {
@@ -120,7 +118,6 @@ public class TaskViewModel extends AbstractViewModel {
     public TaskAdapter getAdapter() {
         return adapter;
     }
-
 
 
     public void addChild(TaskViewModel child) {

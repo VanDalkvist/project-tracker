@@ -5,13 +5,17 @@ import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 /**
  * Created on 10.05.14.
  */
-public class CollapsedTaskViewItemState extends AbstractTaskViewItemState {
+public class CollapsedTaskViewItemState implements TaskViewItemState {
+
     @Override
-    public void onExpand(TaskViewModel item, TaskAdapter adapter) {
+    public void onChangeState(TaskViewModel item, TaskAdapter adapter) {
+        onExpand(item, adapter);
+    }
+
+    private void onExpand(TaskViewModel item, TaskAdapter adapter) {
         int pos = adapter.getPosition(item);
-        for(TaskViewModel child : item.getChildren()) {
+        for (TaskViewModel child : item.getChildren()) {
             adapter.insert(child, ++pos);
         }
-        item.setViewState(TaskViewItemState.EXPANDED);
     }
 }
