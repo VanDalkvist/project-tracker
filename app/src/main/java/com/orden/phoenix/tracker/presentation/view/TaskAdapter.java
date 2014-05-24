@@ -20,25 +20,28 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
 
     public TaskAdapter(Context context, int resource, List<TaskViewModel> items) {
         super(context, resource, items);
+
         treeNodeShiftValue = context.getResources().getDimensionPixelSize(R.dimen.taskListItemNodeShift);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final TaskViewModel item = getItem(position);
-        TaskViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.task_view, parent, false);
-            viewHolder = new TaskViewHolder(
-                    convertView.findViewById(R.id.treeSpacerView),
-                    (CheckBox) convertView.findViewById(R.id.taskState),
-                    (TextView) convertView.findViewById(R.id.taskNameText),
-                    (TextView) convertView.findViewById(R.id.timeSpent),
-                    (TriangleView) convertView.findViewById(R.id.expandIcon));
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (TaskViewHolder) convertView.getTag();
-        }
+
+        if (convertView == null) convertView = createView(parent);
+
+        prepareHolder((TaskViewHolder) convertView.getTag(), item);
+
+        return convertView;
+    }
+
+    private View createView(ViewGroup parent) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.task_view, parent, false);
+        view.setTag(createTaskViewHolder(view));
+        return view;
+    }
+
+    private void prepareHolder(TaskViewHolder viewHolder, final TaskViewModel item) {
         viewHolder.getTreeSpacerView().getLayoutParams().width = item.getDepth() * treeNodeShiftValue;
         viewHolder.getStateBox().setChecked(item.isFinished());
         viewHolder.getNameText().setText(item.getName());
@@ -53,7 +56,15 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
             }
         });
         viewHolder.getExpandIcon().setDirection(item.getViewState() == TaskViewItemState.COLLAPSED ? TriangleView.Direction.WEST : TriangleView.Direction.SOUTH);
-        return convertView;
+    }
+
+    private TaskViewHolder createTaskViewHolder(View convertView) {
+        return new TaskViewHolder(
+                convertView.findViewById(R.id.treeSpacerView),
+                (CheckBox) convertView.findViewById(R.id.taskState),
+                (TextView) convertView.findViewById(R.id.taskNameText),
+                (TextView) convertView.findViewById(R.id.timeSpent),
+                (TriangleView) convertView.findViewById(R.id.expandIcon));
     }
 
     private String convertMillsToString(long millis) {
