@@ -10,6 +10,7 @@ import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeIntervalModel;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
+import com.orden.phoenix.tracker.utils.ConsoleLogger;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
 import java.util.ArrayList;
@@ -17,18 +18,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+
 public class TaskListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_list);
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        setContentView(R.layout.activity_task_list);
+
+        ConsoleLogger.d("Creating Activity...");
+
         init();
     }
 
     private void init() {
+        ConsoleLogger.d("Activity initiate process started.");
+
         List<TaskViewModel> items = new ArrayList<TaskViewModel>();
 
         TaskAdapter itemAdapter = new TaskAdapter(this, R.layout.task_view, items);
@@ -37,8 +45,10 @@ public class TaskListActivity extends Activity {
         items.add(getDefaultTaskViewModel("name 2", itemAdapter, 3, 4));
         items.add(getDefaultTaskViewModel("name 3", itemAdapter, 3, 4));
 
-        ListView taskListView = (ListView)findViewById(R.id.taskListView);
+        ListView taskListView = (ListView) findViewById(R.id.taskListView);
         taskListView.setAdapter(itemAdapter);
+
+        ConsoleLogger.d("Activity initiate process finished.");
     }
 
     /**
@@ -50,7 +60,7 @@ public class TaskListActivity extends Activity {
         viewModel.setState(TaskState.CREATED);
         viewModel.setActivityIntervals(getStartIntervals());
         int childCount = new Random().nextInt(childMax);
-        for(int i = 0; i < childCount && depth > 0; i++) {
+        for (int i = 0; i < childCount && depth > 0; i++) {
             viewModel.addChild(getDefaultTaskViewModel(name + depth, adapter, childMax, depth - 1));
         }
         return viewModel;
@@ -81,9 +91,7 @@ public class TaskListActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }
