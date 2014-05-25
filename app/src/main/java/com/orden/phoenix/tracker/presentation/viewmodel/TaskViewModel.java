@@ -1,8 +1,8 @@
 package com.orden.phoenix.tracker.presentation.viewmodel;
 
-import com.orden.phoenix.tracker.model.NoteModel;
+import com.orden.phoenix.tracker.model.Note;
 import com.orden.phoenix.tracker.model.TaskState;
-import com.orden.phoenix.tracker.model.TimeIntervalModel;
+import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 
 import java.util.ArrayList;
@@ -16,14 +16,17 @@ public class TaskViewModel extends AbstractViewModel {
     protected String name;
     protected String description;
     protected long estimate;
-    protected List<TimeIntervalModel> activityIntervals;
+    protected List<TimeInterval> activityIntervals; // todo: use TimeIntervalViewModel
     protected List<String> tags;
-    protected List<NoteModel> notes;
+    protected List<Note> notes;
     protected TaskState state;
     protected TaskViewItemState viewState = TaskViewItemState.COLLAPSED;
-    protected TaskAdapter adapter;
+    protected TaskAdapter adapter; // todo: delete this
     protected TaskViewModel parent;
     protected List<TaskViewModel> children = new ArrayList<TaskViewModel>();
+
+    public TaskViewModel() {
+    }
 
     public TaskViewModel(TaskAdapter adapter) {
         this.adapter = adapter;
@@ -31,7 +34,7 @@ public class TaskViewModel extends AbstractViewModel {
 
     public long getTimeSpent() {
         long result = 0;
-        for (TimeIntervalModel item : activityIntervals) {
+        for (TimeInterval item : activityIntervals) {
             result += item.getDifference();
         }
         return result;
@@ -83,11 +86,11 @@ public class TaskViewModel extends AbstractViewModel {
         setIfChanged(estimate, "estimate");
     }
 
-    public List<TimeIntervalModel> getActivityIntervals() {
+    public List<TimeInterval> getActivityIntervals() {
         return activityIntervals;
     }
 
-    public void setActivityIntervals(List<TimeIntervalModel> activityIntervals) {
+    public void setActivityIntervals(List<TimeInterval> activityIntervals) {
         setIfChanged(activityIntervals, "activityIntervals");
     }
 
@@ -99,11 +102,11 @@ public class TaskViewModel extends AbstractViewModel {
         setIfChanged(tags, "tags");
     }
 
-    public List<NoteModel> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<NoteModel> notes) {
+    public void setNotes(List<Note> notes) {
         setIfChanged(notes, "notes");
     }
 
@@ -122,6 +125,7 @@ public class TaskViewModel extends AbstractViewModel {
 
     public void addChild(TaskViewModel child) {
         children.add(child);
+
         child.setParent(this);
     }
 

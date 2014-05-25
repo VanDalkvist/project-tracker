@@ -5,26 +5,26 @@ import java.util.List;
 /**
  * Created on 4/4/14.
  */
-public class TaskModel {
+public class Task {
     private int id;
     private int parentId;
     private String name;
     private TaskState state;
     private String description;
-    private List<TimeIntervalModel> activityIntervals;
+    private List<TimeInterval> activityIntervals;
     private long estimate;
     private List<String> tags;
-    private List<NoteModel> notes;
+    private List<Note> notes;
 
-    public TaskModel() {
+    public Task() {
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TaskModel)) return false;
+        if (!(o instanceof Task)) return false;
 
-        TaskModel taskModel = (TaskModel) o;
+        Task taskModel = (Task) o;
 
         if (id != taskModel.id) return false;
 
@@ -76,11 +76,11 @@ public class TaskModel {
         this.description = description;
     }
 
-    public List<TimeIntervalModel> getActivityIntervals() {
+    public List<TimeInterval> getActivityIntervals() {
         return activityIntervals;
     }
 
-    public void setActivityIntervals(List<TimeIntervalModel> activityIntervals) {
+    public void setActivityIntervals(List<TimeInterval> activityIntervals) {
         this.activityIntervals = activityIntervals;
     }
 
@@ -100,11 +100,11 @@ public class TaskModel {
         this.tags = tags;
     }
 
-    public List<NoteModel> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<NoteModel> notes) {
+    public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
 

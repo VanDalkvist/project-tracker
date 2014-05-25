@@ -30,6 +30,10 @@ public abstract class AbstractViewModel implements Editable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public boolean isDirty() {
         return dirty;
     }

@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.orden.phoenix.tracker.model.TaskState;
-import com.orden.phoenix.tracker.model.TimeIntervalModel;
+import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 import com.orden.phoenix.tracker.utils.ConsoleLogger;
@@ -71,9 +71,9 @@ public class TaskListActivity extends Activity {
     /**
      * test method
      */
-    private ArrayList<TimeIntervalModel> getStartIntervals() {
-        ArrayList<TimeIntervalModel> activityIntervals = new ArrayList<TimeIntervalModel>();
-        TimeIntervalModel interval = new TimeIntervalModel();
+    private ArrayList<TimeInterval> getStartIntervals() {
+        ArrayList<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();
+        TimeInterval interval = new TimeInterval();
         interval.setFrom(new Date());
         activityIntervals.add(interval);
         return activityIntervals;

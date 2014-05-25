@@ -5,19 +5,19 @@ import java.util.Date;
 /**
  * Created on 4/19/14.
  */
-public class TimeIntervalModel {
+public class TimeInterval {
     private Date from;
     private Date to;
 
-    public TimeIntervalModel() {
-    }
-
-    public long getDifference() {
-        return to == null ? System.currentTimeMillis() - from.getTime() : to.getTime() - from.getTime();
+    public TimeInterval() {
     }
 
     public static void foo() {
 
+    }
+
+    public long getDifference() {
+        return to == null ? System.currentTimeMillis() - from.getTime() : to.getTime() - from.getTime();
     }
 
     public Date getFrom() {
@@ -39,9 +39,9 @@ public class TimeIntervalModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TimeIntervalModel)) return false;
+        if (!(o instanceof TimeInterval)) return false;
 
-        TimeIntervalModel that = (TimeIntervalModel) o;
+        TimeInterval that = (TimeInterval) o;
 
         if (from != null ? !from.equals(that.from) : that.from != null) return false;
         if (to != null ? !to.equals(that.to) : that.to != null) return false;

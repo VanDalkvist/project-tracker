@@ -5,12 +5,12 @@ import java.util.Date;
 /**
  * Created on 4/19/14.
  */
-public class NoteModel {
+public class Note {
     private int id;
     private Date creationDate;
     private String text;
 
-    public NoteModel() {
+    public Note() {
     }
 
     public int getId() {
@@ -40,9 +40,9 @@ public class NoteModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NoteModel)) return false;
+        if (!(o instanceof Note)) return false;
 
-        NoteModel note = (NoteModel) o;
+        Note note = (Note) o;
 
         if (id != note.id) return false;
         if (creationDate != null ? !creationDate.equals(note.creationDate) : note.creationDate != null)
