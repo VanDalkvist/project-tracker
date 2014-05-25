@@ -13,6 +13,8 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
     private final Activity context;
     private final String LINE_SEPARATOR = "\n";
 
+    ConsoleLogger Logger = new ConsoleLogger("Project-Tracker.ExceptionHandler");
+
     public ExceptionHandler(Activity context) {
         this.context = context;
     }
@@ -21,7 +23,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         StringWriter stackTrace = new StringWriter();
         exception.printStackTrace(new PrintWriter(stackTrace));
 
-        ConsoleLogger.e(String.valueOf(context)
+        Logger.e(String.valueOf(context)
                 + ": "
                 + "************ CAUSE OF ERROR ************\n\n"
                 + stackTrace.toString()

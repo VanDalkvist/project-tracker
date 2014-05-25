@@ -8,28 +8,10 @@ import android.util.Log;
  */
 public class ConsoleLogger {
 
-    public static void v(String msg) {
-        write(Log.VERBOSE, msg);
-    }
+    private String Tag;
 
-    public static void d(String msg) {
-        write(Log.DEBUG, msg);
-    }
-
-    public static void w(String msg) {
-        write(Log.WARN, msg);
-    }
-
-    public static void e(String msg) {
-        write(Log.ERROR, msg);
-    }
-
-    public static void i(String msg) {
-        write(Log.INFO, msg);
-    }
-
-    private static void write(int priority, String msg) {
-        Log.println(priority, null, getLocation() + msg);
+    public ConsoleLogger(String tag) {
+        Tag = tag;
     }
 
     private static String getLocation() {
@@ -61,5 +43,29 @@ public class ConsoleLogger {
         if (!TextUtils.isEmpty(simpleName)) return simpleName;
 
         return getClassName(clazz.getEnclosingClass());
+    }
+
+    public void v(String msg) {
+        write(Log.VERBOSE, msg);
+    }
+
+    public void d(String msg) {
+        write(Log.DEBUG, msg);
+    }
+
+    public void w(String msg) {
+        write(Log.WARN, msg);
+    }
+
+    public void e(String msg) {
+        write(Log.ERROR, msg);
+    }
+
+    public void i(String msg) {
+        write(Log.INFO, msg);
+    }
+
+    private void write(int priority, String msg) {
+        Log.println(priority, Tag, getLocation() + msg);
     }
 }

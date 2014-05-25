@@ -21,6 +21,8 @@ import java.util.Random;
 
 public class TaskListActivity extends Activity {
 
+    ConsoleLogger Logger = new ConsoleLogger("Project-Tracker");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +31,13 @@ public class TaskListActivity extends Activity {
 
         setContentView(R.layout.activity_task_list);
 
-        ConsoleLogger.d("Creating Activity...");
+        Logger.d("Creating Activity...");
 
         init();
     }
 
     private void init() {
-        ConsoleLogger.d("Activity initiate process started.");
+        Logger.d("Activity initiate process started.");
 
         List<TaskViewModel> items = new ArrayList<TaskViewModel>();
 
@@ -48,7 +50,7 @@ public class TaskListActivity extends Activity {
         ListView taskListView = (ListView) findViewById(R.id.taskListView);
         taskListView.setAdapter(itemAdapter);
 
-        ConsoleLogger.d("Activity initiate process finished.");
+        Logger.d("Activity initiate process finished.");
     }
 
     /**
