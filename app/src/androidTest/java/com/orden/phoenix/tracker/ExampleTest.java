@@ -1,4 +1,4 @@
-package com.orden.phoenix.tests;
+package com.orden.phoenix.tracker;
 
 import android.test.InstrumentationTestCase;
 

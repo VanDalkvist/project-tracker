@@ -1,7 +1,8 @@
 apply plugin: 'android'
+
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         minSdkVersion 8
@@ -16,6 +17,7 @@ android {
         }
     }
 }
+
 dependencies {
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:appcompat-v7:+'
@@ -23,8 +25,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.+'
     compile 'org.modelmapper:modelmapper:0.6.+'
 
-    //testLocalCompile 'junit:junit:4.11'
-}
-
-repositories {
+//    androidTestCompile 'junit:junit:4.11'
 }

@@ -1,9 +1,9 @@
-package com.orden.phoenix.tests.tasks;
+package com.orden.phoenix.tracker.tasks;
 
 import android.test.InstrumentationTestCase;
 
-import com.orden.phoenix.tests.mocks.TaskMock;
-import com.orden.phoenix.tests.mocks.TaskViewModelMock;
+import com.orden.phoenix.tracker.mocks.TaskMock;
+import com.orden.phoenix.tracker.mocks.TaskViewModelMock;
 import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
