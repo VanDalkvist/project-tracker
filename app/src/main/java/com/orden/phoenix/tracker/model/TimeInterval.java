@@ -1,19 +1,16 @@
 package com.orden.phoenix.tracker.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created on 4/19/14.
  */
-public class TimeInterval {
+public class TimeInterval implements Serializable{
     private Date from;
     private Date to;
 
     public TimeInterval() {
-    }
-
-    public static void foo() {
-
     }
 
     public long getDifference() {

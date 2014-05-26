@@ -5,6 +5,7 @@ import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,16 +13,16 @@ import java.util.List;
 /**
  * Created on 4/19/14.
  */
-public class TaskViewModel extends AbstractViewModel {
+public class TaskViewModel extends AbstractViewModel implements Serializable {
     protected String name;
     protected String description;
     protected long estimate;
-    protected List<TimeInterval> activityIntervals; // todo: use TimeIntervalViewModel
-    protected List<String> tags;
-    protected List<Note> notes;
+    protected List<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();// todo: use TimeIntervalViewModel
+    protected List<String> tags = new ArrayList<String>();
+    protected List<Note> notes = new ArrayList<Note>();
     protected TaskState state;
     protected TaskViewItemState viewState = TaskViewItemState.COLLAPSED;
-    protected TaskAdapter adapter; // todo: delete this
+    protected transient TaskAdapter adapter; // todo: delete this
     protected TaskViewModel parent;
     protected List<TaskViewModel> children = new ArrayList<TaskViewModel>();
 
@@ -48,6 +49,13 @@ public class TaskViewModel extends AbstractViewModel {
         viewState.onChangeState(this, adapter);
 
         this.setViewState(state);
+    }
+
+    // TODO finish the method when new fields will be required to edit
+    public void merge(TaskViewModel source) {
+        setName(source.getName());
+        setEstimate(source.getEstimate());
+        setDescription(source.getDescription());
     }
 
     public TaskState getState() {
@@ -122,10 +130,8 @@ public class TaskViewModel extends AbstractViewModel {
         return adapter;
     }
 
-
     public void addChild(TaskViewModel child) {
         children.add(child);
-
         child.setParent(this);
     }
 

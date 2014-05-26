@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="taskListItemTriangleSize">20dp</dimen>
     <dimen name="taskListItemNodeShift">10dp</dimen>
+    <dimen name="element_margin_default">2dp</dimen>
 </resources>

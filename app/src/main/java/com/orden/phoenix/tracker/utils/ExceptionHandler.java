@@ -10,20 +10,19 @@ import java.io.StringWriter;
  * Created by I_van on 04.05.2014.
  */
 public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
+    private static final String LINE_SEPARATOR = "\n";
+    private static ConsoleLogger logger = new ConsoleLogger("Project-Tracker.ExceptionHandler");
     private final Activity context;
-    private final String LINE_SEPARATOR = "\n";
-
-    ConsoleLogger Logger = new ConsoleLogger("Project-Tracker.ExceptionHandler");
 
     public ExceptionHandler(Activity context) {
         this.context = context;
     }
 
-    public void uncaughtException(Thread thread, Throwable exception) {
+    public static void logException(Throwable exception, String tag) {
         StringWriter stackTrace = new StringWriter();
         exception.printStackTrace(new PrintWriter(stackTrace));
 
-        Logger.e(String.valueOf(context)
+        logger.e(tag
                 + ": "
                 + "************ CAUSE OF ERROR ************\n\n"
                 + stackTrace.toString()
@@ -37,7 +36,9 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
                 + "SDK: " + Build.VERSION.SDK + LINE_SEPARATOR
                 + "Release: " + Build.VERSION.RELEASE + LINE_SEPARATOR
                 + "Incremental: " + Build.VERSION.INCREMENTAL + LINE_SEPARATOR);
+    }
 
-        thread.interrupt();
+    public void uncaughtException(Thread thread, Throwable exception) {
+        logException(exception, String.valueOf(context));
     }
 }

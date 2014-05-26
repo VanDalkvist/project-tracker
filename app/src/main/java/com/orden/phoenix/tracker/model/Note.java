@@ -1,11 +1,12 @@
 package com.orden.phoenix.tracker.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created on 4/19/14.
  */
-public class Note {
+public class Note implements Serializable{
     private int id;
     private Date creationDate;
     private String text;

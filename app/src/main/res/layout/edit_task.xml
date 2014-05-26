@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.orden.phoenix.tracker.EditTaskActivity"
+    tools:ignore="MergeRootFrame"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <TableLayout android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TableRow>
+            <TextView android:text="@string/edit_task_name_label"
+                android:layout_marginRight="@dimen/element_margin_default"
+                android:layout_marginBottom="@dimen/element_margin_default"/>
+            <EditText android:id="@+id/edit_task_name_text"
+                android:inputType="text"
+                android:layout_marginBottom="@dimen/element_margin_default"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/edit_task_estimated_label"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/element_margin_default"
+                android:layout_marginBottom="@dimen/element_margin_default"/>
+            <EditText android:id="@+id/edit_task_estimated_options"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="@dimen/element_margin_default"/>
+        </TableRow>
+
+        <TableRow android:layout_weight="1">
+            <TextView android:text="@string/edit_task_description_label"
+                android:layout_gravity="clip_vertical"
+                android:layout_marginRight="@dimen/element_margin_default"
+                android:layout_marginBottom="@dimen/element_margin_default"/>
+            <EditText android:id="@+id/edit_task_description_text"
+                android:inputType="textMultiLine"
+                android:layout_height="fill_parent"
+                android:ems="10"
+                android:gravity="top"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <Button
+                android:id="@+id/edit_task_save_button"
+                android:text="@string/edit_task_save_label"
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"/>
+            <Button
+                android:id="@+id/edit_task_cancel_button"
+                android:text="@string/edit_task_cancel_label"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_column="1"
+                android:layout_weight="0.5"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

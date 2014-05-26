@@ -11,11 +11,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.orden.phoenix.tracker.TaskListActivity"
-            android:label="@string/title_activity_task_list">
+            android:label="@string/title_task_list_activity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.orden.phoenix.tracker.EditTaskActivity"
+            android:label="@string/title_edit_task_activity" >
+        </activity>
     </application>
+
 </manifest>
