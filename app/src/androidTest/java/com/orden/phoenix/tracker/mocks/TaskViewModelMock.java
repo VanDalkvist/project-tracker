@@ -17,8 +17,8 @@ public class TaskViewModelMock {
     }
 
     private static TaskViewModel getDefaultTaskViewModel(int id, int parentId, String name, int childMax, int depth) {
-        TaskViewModel viewModel = new TaskViewModel(null);
-        viewModel.setId(id);
+        TaskViewModel viewModel = new TaskViewModel();
+        viewModel.setId(Integer.toString(id));
 //        viewModel.setParent(name);
         viewModel.setName(name);
         viewModel.setState(TaskState.CREATED);

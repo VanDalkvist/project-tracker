@@ -24,7 +24,7 @@ public class EditTaskActivity extends Activity {
     }
 
     private void init() {
-        taskToEdit = (TaskViewModel)getIntent().getSerializableExtra(TASK_EXTRA);
+        taskToEdit = (TaskViewModel) getIntent().getSerializableExtra(TASK_EXTRA);
         final EditText nameText = (EditText) findViewById(R.id.edit_task_name_text);
         nameText.setText(taskToEdit.getName());
 
@@ -39,11 +39,13 @@ public class EditTaskActivity extends Activity {
             @Override
             public void onClick(View v) {
                 taskToEdit.setName(nameText.getText().toString());
+                long estimate = 0L;
                 try {
-                    taskToEdit.setEstimate(Long.parseLong(estimatedText.getText().toString()));
-                } catch (NumberFormatException e) {
-                    taskToEdit.setEstimate(0L);
+                    estimate = Long.parseLong(estimatedText.getText().toString());
+                } catch (NumberFormatException ignored) {
                 }
+                taskToEdit.setEstimate(estimate);
+
                 taskToEdit.setDescription(descriptionText.getText().toString());
                 goBackToList(false);
             }
@@ -59,12 +61,12 @@ public class EditTaskActivity extends Activity {
 
     private void goBackToList(boolean cancel) {
         Intent goToList = new Intent();
-        if(cancel) {
-            setResult(RESULT_CANCELED, goToList);
-        } else {
+        int result = RESULT_CANCELED;
+        if (!cancel) {
             goToList.putExtra(TASK_EXTRA, taskToEdit);
-            setResult(RESULT_OK, goToList);
+            result = RESULT_OK;
         }
+        setResult(result, goToList);
         finish();
     }
 }

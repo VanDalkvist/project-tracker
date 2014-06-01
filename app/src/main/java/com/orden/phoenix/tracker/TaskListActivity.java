@@ -1,6 +1,5 @@
 package com.orden.phoenix.tracker;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -27,20 +26,35 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class TaskListActivity extends Activity {
+import roboguice.RoboGuice;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
+
+public class TaskListActivity extends RoboActivity {
     private static ConsoleLogger logger = new ConsoleLogger("Project-Tracker");
 
     private TaskAdapter adapter;
     private TaskViewModel selectedItem;
 
+    @InjectView(R.id.taskListView)
+    private ListView taskListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         logger.d("Creating Activity...");
-        super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
-        setContentView(R.layout.activity_task_list);
 
+        super.onCreate(savedInstanceState);
+
+        //inject();
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        setContentView(R.layout.activity_task_list);
         init();
+    }
+
+    private void inject() {
+        RoboGuice.getInjector(this).injectViewMembers(this);
     }
 
     private void init() {
@@ -48,7 +62,6 @@ public class TaskListActivity extends Activity {
 
         adapter = new TaskAdapter(this, R.layout.activity_task_list, new ArrayList<TaskViewModel>());
 
-        ListView taskListView = (ListView) findViewById(R.id.taskListView);
         taskListView.setAdapter(adapter);
         registerForContextMenu(taskListView);
 
@@ -136,7 +149,7 @@ public class TaskListActivity extends Activity {
             public void call(List<Task> result) {
                 TaskMapper mapper = new TaskMapper();
                 adapter.clear();
-                for(Task dto : result) {
+                for (Task dto : result) {
                     TaskViewModel item = mapper.fromDto(dto);
                     adapter.add(item);
                     item.loadChildren(adapter);

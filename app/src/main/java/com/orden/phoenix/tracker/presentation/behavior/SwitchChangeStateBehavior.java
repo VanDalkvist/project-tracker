@@ -1,5 +1,6 @@
 package com.orden.phoenix.tracker.presentation.behavior;
 
+import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewItemState;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 
@@ -9,11 +10,15 @@ import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 public class SwitchChangeStateBehavior implements ChangeStateBehavior {
     @Override
     public TaskViewModel change(TaskViewModel current, ChangeStateContext context) {
-        if(current.getViewState() == TaskViewItemState.COLLAPSED) {
-            current.getViewState().onExpand(current, context.getAdapter());
+        TaskViewItemState viewState = current.getViewState();
+        TaskAdapter adapter = context.getAdapter();
+
+        if (viewState == TaskViewItemState.COLLAPSED) {
+            viewState.onExpand(current, adapter);
         } else {
-            current.getViewState().onCollapse(current, context.getAdapter());
+            viewState.onCollapse(current, adapter);
         }
+
         return current;
     }
 }

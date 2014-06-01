@@ -23,8 +23,8 @@ public class TaskMock {
         model.setActivityIntervals(getStartIntervals());
         model.setEstimate(5);
         model.setDescription("description");
-        model.setId(id);
-        model.setParentId(parentId);
+        model.setId(Integer.toString(id));
+        model.setParentId(Integer.toString(parentId));
         return model;
     }
 
