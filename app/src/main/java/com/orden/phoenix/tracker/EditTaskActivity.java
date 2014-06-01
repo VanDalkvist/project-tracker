@@ -24,13 +24,12 @@ public class EditTaskActivity extends Activity {
     }
 
     private void init() {
-        // TODO make a check if task is null
         taskToEdit = (TaskViewModel)getIntent().getSerializableExtra(TASK_EXTRA);
         final EditText nameText = (EditText) findViewById(R.id.edit_task_name_text);
         nameText.setText(taskToEdit.getName());
 
         final EditText estimatedText = (EditText) findViewById(R.id.edit_task_estimated_options);
-        estimatedText.setText(Long.toString(taskToEdit.getTimeSpent()));
+        estimatedText.setText(Long.toString(taskToEdit.getEstimate()));
 
         final EditText descriptionText = (EditText) findViewById(R.id.edit_task_description_text);
         descriptionText.setText(taskToEdit.getDescription());

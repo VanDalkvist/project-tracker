@@ -10,15 +10,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.orden.phoenix.tracker.mapping.TaskMapper;
+import com.orden.phoenix.tracker.model.GetTasksCommand;
+import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
+import com.orden.phoenix.tracker.storage.DatabaseException;
+import com.orden.phoenix.tracker.storage.StorageProvider;
 import com.orden.phoenix.tracker.utils.ConsoleLogger;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class TaskListActivity extends Activity {
@@ -40,11 +46,8 @@ public class TaskListActivity extends Activity {
     private void init() {
         logger.d("Activity initiate process started.");
 
-        adapter = new TaskAdapter(this, R.layout.task_view, new ArrayList<TaskViewModel>());
+        adapter = new TaskAdapter(this, R.layout.activity_task_list, new ArrayList<TaskViewModel>());
 
-        addTask(getDefaultTaskViewModel("name 1", 3, 4));
-        addTask(getDefaultTaskViewModel("name 2", 3, 4));
-        addTask(getDefaultTaskViewModel("name 3", 3, 4));
         ListView taskListView = (ListView) findViewById(R.id.taskListView);
         taskListView.setAdapter(adapter);
         registerForContextMenu(taskListView);
@@ -60,11 +63,19 @@ public class TaskListActivity extends Activity {
         }
         switch (requestCode) {
             case R.id.action_new:
-                adapter.add((TaskViewModel) data.getSerializableExtra(EditTaskActivity.TASK_EXTRA));
+                addTask((TaskViewModel) data.getSerializableExtra(EditTaskActivity.TASK_EXTRA));
                 break;
             case R.id.action_edit:
-                selectedItem.merge((TaskViewModel) data.getSerializableExtra(EditTaskActivity.TASK_EXTRA));
-                adapter.notifyDataSetChanged();
+                try {
+                    TaskViewModel editedTask = (TaskViewModel)
+                            data.getSerializableExtra(EditTaskActivity.TASK_EXTRA);
+                    selectedItem.merge(editedTask);
+                    StorageProvider.getInstance().getTaskFactory(this).updateInstance(
+                            new TaskMapper().toDto(selectedItem));
+                    adapter.notifyDataSetChanged();
+                } catch (DatabaseException e) {
+                    ExceptionHandler.logException(e, this.getPackageName());
+                }
                 selectedItem = null;
                 break;
             default:
@@ -106,12 +117,32 @@ public class TaskListActivity extends Activity {
             case R.id.action_new:
                 goToEditTaskActivity(new TaskViewModel(), R.id.action_new);
                 return true;
-            case R.id.action_settings:
-                // TODO create settings dialog
+            // TODO remove, test menu
+            case R.id.action_generate_test:
+                addTask(getDefaultTaskViewModel("name 1", 3, 4));
+                addTask(getDefaultTaskViewModel("name 2", 3, 4));
+                addTask(getDefaultTaskViewModel("name 3", 3, 4));
                 return true;
             default:
                 return true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new GetTasksCommand(this, null, new GetTasksCommand.Callback() {
+            @Override
+            public void call(List<Task> result) {
+                TaskMapper mapper = new TaskMapper();
+                adapter.clear();
+                for(Task dto : result) {
+                    TaskViewModel item = mapper.fromDto(dto);
+                    adapter.add(item);
+                    item.loadChildren(adapter);
+                }
+            }
+        }).execute((Object[]) null);
     }
 
     private void goToEditTaskActivity(TaskViewModel taskToEdit, int code) {
@@ -120,13 +151,12 @@ public class TaskListActivity extends Activity {
         startActivityForResult(goToNew, code);
     }
 
-    private void addTask(TaskViewModel task) {
-        adapter.add(task);
+    private void addTask(TaskViewModel createdTask) {
+        createdTask.createWithChildren(adapter);
     }
 
     private void removeTask(TaskViewModel task) {
-        task.getViewState().onCollapse(task, adapter);
-        adapter.remove(task);
+        task.deleteWithChildren(adapter);
     }
 
     /**

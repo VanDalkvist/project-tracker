@@ -1,20 +1,25 @@
 package com.orden.phoenix.tracker.model;
 
+import com.orden.phoenix.tracker.storage.TreeStorable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created on 4/4/14.
  */
-public class Task {
-    private int id;
-    private int parentId;
+public class Task implements TreeStorable {
+    private String id;
+    private String parentId;
     private String name;
     private TaskState state;
     private String description;
-    private List<TimeInterval> activityIntervals;
+    // TODO change to list of time interval ids
+    private List<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();
     private long estimate;
-    private List<String> tags;
-    private List<Note> notes;
+    private List<String> tags = new ArrayList<String>();
+    // TODO change to list of node ids
+    private List<Note> notes = new ArrayList<Note>();
 
     public Task() {
     }
@@ -26,14 +31,14 @@ public class Task {
 
         Task taskModel = (Task) o;
 
-        if (id != taskModel.id) return false;
+        if (!id.equals(taskModel.id)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 
     public TaskState getState() {
@@ -44,19 +49,19 @@ public class Task {
         this.state = state;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

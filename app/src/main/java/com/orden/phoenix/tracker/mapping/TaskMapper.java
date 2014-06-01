@@ -4,16 +4,17 @@ import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 
 /**
  * Created by I_van on 25.05.2014.
  */
 public class TaskMapper implements Mapper<Task, TaskViewModel> {
-
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     public TaskMapper() {
         modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
     @Override
