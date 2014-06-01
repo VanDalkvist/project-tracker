@@ -11,5 +11,6 @@ public interface TaskViewItemState extends Serializable {
     static final TaskViewItemState COLLAPSED = new CollapsedTaskViewItemState();
     static final TaskViewItemState EXPANDED = new ExpandedTaskViewItemState();
 
-    void onChangeState(TaskViewModel item, TaskAdapter adapter);
+    void onExpand(TaskViewModel item, TaskAdapter adapter);
+    void onCollapse(TaskViewModel item, TaskAdapter adapter);
 }

@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
-import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewItemState;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 import com.orden.phoenix.tracker.utils.ConsoleLogger;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
@@ -43,9 +42,9 @@ public class TaskListActivity extends Activity {
 
         adapter = new TaskAdapter(this, R.layout.task_view, new ArrayList<TaskViewModel>());
 
-        addTask(getDefaultTaskViewModel("name 1", adapter, 3, 4));
-        addTask(getDefaultTaskViewModel("name 2", adapter, 3, 4));
-        addTask(getDefaultTaskViewModel("name 3", adapter, 3, 4));
+        addTask(getDefaultTaskViewModel("name 1", 3, 4));
+        addTask(getDefaultTaskViewModel("name 2", 3, 4));
+        addTask(getDefaultTaskViewModel("name 3", 3, 4));
         ListView taskListView = (ListView) findViewById(R.id.taskListView);
         taskListView.setAdapter(adapter);
         registerForContextMenu(taskListView);
@@ -105,7 +104,7 @@ public class TaskListActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_new:
-                goToEditTaskActivity(new TaskViewModel(adapter), R.id.action_new);
+                goToEditTaskActivity(new TaskViewModel(), R.id.action_new);
                 return true;
             case R.id.action_settings:
                 // TODO create settings dialog
@@ -126,21 +125,21 @@ public class TaskListActivity extends Activity {
     }
 
     private void removeTask(TaskViewModel task) {
-        task.changeState(TaskViewItemState.COLLAPSED);
+        task.getViewState().onCollapse(task, adapter);
         adapter.remove(task);
     }
 
     /**
      * test method
      */
-    private TaskViewModel getDefaultTaskViewModel(String name, TaskAdapter adapter, int childMax, int depth) {
-        TaskViewModel viewModel = new TaskViewModel(adapter);
+    private TaskViewModel getDefaultTaskViewModel(String name, int childMax, int depth) {
+        TaskViewModel viewModel = new TaskViewModel();
         viewModel.setName(name);
         viewModel.setState(TaskState.CREATED);
         viewModel.setActivityIntervals(getStartIntervals());
         int childCount = new Random().nextInt(childMax);
         for (int i = 0; i < childCount && depth > 0; i++) {
-            viewModel.addChild(getDefaultTaskViewModel(name + depth, adapter, childMax, depth - 1));
+            viewModel.addChild(getDefaultTaskViewModel(name + depth, childMax, depth - 1));
         }
         return viewModel;
     }

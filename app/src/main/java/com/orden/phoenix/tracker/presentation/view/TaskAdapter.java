@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.orden.phoenix.tracker.R;
+import com.orden.phoenix.tracker.presentation.behavior.ChangeStateContext;
 import com.orden.phoenix.tracker.presentation.behavior.SwitchChangeStateBehavior;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewItemState;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
@@ -51,8 +52,7 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
             @Override
             public void onClick(View v) {
                 // todo: configure ChangeStateBehavior in config;
-                TaskViewItemState newState = new SwitchChangeStateBehavior().change(item.getViewState());
-                item.changeState(newState);
+                new SwitchChangeStateBehavior().change(item, new ChangeStateContext(TaskAdapter.this));
             }
         });
         viewHolder.getExpandIcon().setDirection(item.getViewState() == TaskViewItemState.COLLAPSED ? TriangleView.Direction.WEST : TriangleView.Direction.SOUTH);
@@ -97,40 +97,20 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
             return stateBox;
         }
 
-        public void setStateBox(CheckBox stateBox) {
-            this.stateBox = stateBox;
-        }
-
         public TextView getNameText() {
             return nameText;
-        }
-
-        public void setNameText(TextView nameText) {
-            this.nameText = nameText;
         }
 
         public TextView getTimeSpentText() {
             return timeSpentText;
         }
 
-        public void setTimeSpentText(TextView timeSpentText) {
-            this.timeSpentText = timeSpentText;
-        }
-
         public TriangleView getExpandIcon() {
             return expandIcon;
         }
 
-        public void setExpandIcon(TriangleView expandIcon) {
-            this.expandIcon = expandIcon;
-        }
-
         public View getTreeSpacerView() {
             return treeSpacerView;
-        }
-
-        public void setTreeSpacerView(View treeSpacerView) {
-            this.treeSpacerView = treeSpacerView;
         }
     }
 }

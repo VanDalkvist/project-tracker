@@ -3,7 +3,6 @@ package com.orden.phoenix.tracker.presentation.viewmodel;
 import com.orden.phoenix.tracker.model.Note;
 import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.model.TimeInterval;
-import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,15 +21,10 @@ public class TaskViewModel extends AbstractViewModel implements Serializable {
     protected List<Note> notes = new ArrayList<Note>();
     protected TaskState state;
     protected TaskViewItemState viewState = TaskViewItemState.COLLAPSED;
-    protected transient TaskAdapter adapter; // todo: delete this
     protected TaskViewModel parent;
     protected List<TaskViewModel> children = new ArrayList<TaskViewModel>();
 
     public TaskViewModel() {
-    }
-
-    public TaskViewModel(TaskAdapter adapter) {
-        this.adapter = adapter;
     }
 
     public long getTimeSpent() {
@@ -43,12 +37,6 @@ public class TaskViewModel extends AbstractViewModel implements Serializable {
 
     public int getDepth() {
         return parent != null ? parent.getDepth() + 1 : 0;
-    }
-
-    public void changeState(TaskViewItemState state) {
-        viewState.onChangeState(this, adapter);
-
-        this.setViewState(state);
     }
 
     // TODO finish the method when new fields will be required to edit
@@ -124,10 +112,6 @@ public class TaskViewModel extends AbstractViewModel implements Serializable {
 
     public void setViewState(TaskViewItemState viewState) {
         setIfChanged(viewState, "viewState");
-    }
-
-    public TaskAdapter getAdapter() {
-        return adapter;
     }
 
     public void addChild(TaskViewModel child) {
