@@ -13,9 +13,9 @@ import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
-import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
+import com.orden.phoenix.tracker.presentation.viewmodel.TimeIntervalViewModel;
 import com.orden.phoenix.tracker.storage.DatabaseException;
 import com.orden.phoenix.tracker.storage.StorageProvider;
 import com.orden.phoenix.tracker.utils.ConsoleLogger;
@@ -76,7 +76,7 @@ public class TaskListActivity extends RoboActivity {
                     TaskViewModel editedTask = (TaskViewModel)
                             data.getSerializableExtra(EditTaskActivity.TASK_EXTRA);
                     selectedItem.merge(editedTask);
-                    StorageProvider.getInstance().getTaskFactory(this).updateInstance(
+                    StorageProvider.getInstance().getTaskFactory(this).update(
                             new TaskMapper().toDto(selectedItem));
                     adapter.notifyDataSetChanged();
                 } catch (DatabaseException e) {
@@ -183,9 +183,9 @@ public class TaskListActivity extends RoboActivity {
     /**
      * test method
      */
-    private ArrayList<TimeInterval> getStartIntervals() {
-        ArrayList<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();
-        TimeInterval interval = new TimeInterval();
+    private ArrayList<TimeIntervalViewModel> getStartIntervals() {
+        ArrayList<TimeIntervalViewModel> activityIntervals = new ArrayList<TimeIntervalViewModel>();
+        TimeIntervalViewModel interval = new TimeIntervalViewModel();
         interval.setFrom(new Date());
         activityIntervals.add(interval);
         return activityIntervals;

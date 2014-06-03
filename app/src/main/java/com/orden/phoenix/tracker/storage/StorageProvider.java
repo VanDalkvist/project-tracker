@@ -12,12 +12,13 @@ public class StorageProvider {
     private static StorageProvider instance;
 
     public static StorageProvider getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new StorageProvider();
         }
         return instance;
     }
 
+    // todo: optimize that - store instance in internal dictionary for example
     public TreeStorableFactory<Task> getTaskFactory(Context context) {
         return new SQLiteTaskFactory(context);
     }

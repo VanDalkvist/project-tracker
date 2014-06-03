@@ -1,20 +1,25 @@
 package com.orden.phoenix.tracker.model;
 
-import java.io.Serializable;
+import com.orden.phoenix.tracker.storage.Storable;
+
 import java.util.Date;
 
 /**
  * Created on 4/19/14.
  */
-public class TimeInterval implements Serializable{
+public class TimeInterval implements Storable {
+
+    private String id;
     private Date from;
     private Date to;
 
-    public TimeInterval() {
+    @Override
+    public String getId() {
+        return id;
     }
 
-    public long getDifference() {
-        return to == null ? System.currentTimeMillis() - from.getTime() : to.getTime() - from.getTime();
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Date getFrom() {
@@ -31,25 +36,5 @@ public class TimeInterval implements Serializable{
 
     public void setTo(Date to) {
         this.to = to;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TimeInterval)) return false;
-
-        TimeInterval that = (TimeInterval) o;
-
-        if (from != null ? !from.equals(that.from) : that.from != null) return false;
-        if (to != null ? !to.equals(that.to) : that.to != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = from != null ? from.hashCode() : 0;
-        result = 31 * result + (to != null ? to.hashCode() : 0);
-        return result;
     }
 }

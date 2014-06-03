@@ -5,7 +5,6 @@ import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Note;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
-import com.orden.phoenix.tracker.model.TimeInterval;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.storage.DatabaseException;
 import com.orden.phoenix.tracker.storage.StorableFactory;
@@ -18,12 +17,14 @@ import java.util.List;
 
 /**
  * Created on 4/19/14.
+ *
+ * @author Alex
  */
 public class TaskViewModel extends AbstractViewModel {
     protected String name;
     protected String description;
     protected long estimate;
-    protected List<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();// todo: use TimeIntervalViewModel
+    protected List<TimeIntervalViewModel> activityIntervals = new ArrayList<TimeIntervalViewModel>();
     protected List<String> tags = new ArrayList<String>();
     protected List<Note> notes = new ArrayList<Note>();
     protected TaskState state;
@@ -34,9 +35,26 @@ public class TaskViewModel extends AbstractViewModel {
     public TaskViewModel() {
     }
 
+    private static void saveEntity(TaskViewModel node, TaskMapper mapper, StorableFactory<Task> taskFactory) throws DatabaseException {
+        Task dto = mapper.toDto(node);
+        taskFactory.create(dto);
+        // after creation in db id will be set
+        node.setId(dto.getId());
+        for (TaskViewModel child : node.getChildren()) {
+            saveEntity(child, mapper, taskFactory);
+        }
+    }
+
+    private static void deleteEntity(TaskViewModel node, StorableFactory<Task> taskFactory) throws DatabaseException {
+        taskFactory.delete(node.getId());
+        for (TaskViewModel child : node.getChildren()) {
+            deleteEntity(child, taskFactory);
+        }
+    }
+
     public long getTimeSpent() {
         long result = 0;
-        for (TimeInterval item : activityIntervals) {
+        for (TimeIntervalViewModel item : activityIntervals) {
             result += item.getDifference();
         }
         return result;
@@ -58,11 +76,11 @@ public class TaskViewModel extends AbstractViewModel {
             @Override
             public void call(List<Task> result) {
                 TaskMapper mapper = new TaskMapper();
-                for(Task dto : result) {
+                for (Task dto : result) {
                     TaskViewModel.this.addChild(mapper.fromDto(dto));
                 }
                 // update icon
-                if(!result.isEmpty()) {
+                if (!result.isEmpty()) {
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -72,23 +90,13 @@ public class TaskViewModel extends AbstractViewModel {
     public void createWithChildren(TaskAdapter adapter) {
         try {
             saveEntity(this, new TaskMapper(), StorageProvider.getInstance().getTaskFactory(adapter.getContext()));
-            if(isRoot()) {
+            if (isRoot()) {
                 adapter.add(this);
             } else {
                 adapter.notifyDataSetChanged();
             }
         } catch (DatabaseException e) {
             ExceptionHandler.logException(e, adapter.getContext().getPackageName());
-        }
-    }
-
-    private static void saveEntity(TaskViewModel node, TaskMapper mapper, StorableFactory<Task> taskFactory) throws DatabaseException {
-        Task dto = mapper.toDto(node);
-        taskFactory.createInstance(dto);
-        // after creation in db id will be set
-        node.setId(dto.getId());
-        for(TaskViewModel child : node.getChildren()) {
-            saveEntity(child, mapper, taskFactory);
         }
     }
 
@@ -101,13 +109,6 @@ public class TaskViewModel extends AbstractViewModel {
             ExceptionHandler.logException(e, adapter.getContext().getPackageName());
         }
 
-    }
-
-    private static void deleteEntity(TaskViewModel node, StorableFactory<Task> taskFactory) throws DatabaseException {
-        taskFactory.delete(node.getId());
-        for(TaskViewModel child : node.getChildren()) {
-            deleteEntity(child, taskFactory);
-        }
     }
 
     public boolean isRoot() {
@@ -150,11 +151,11 @@ public class TaskViewModel extends AbstractViewModel {
         setIfChanged(estimate, "estimate");
     }
 
-    public List<TimeInterval> getActivityIntervals() {
+    public List<TimeIntervalViewModel> getActivityIntervals() {
         return activityIntervals;
     }
 
-    public void setActivityIntervals(List<TimeInterval> activityIntervals) {
+    public void setActivityIntervals(List<TimeIntervalViewModel> activityIntervals) {
         setIfChanged(activityIntervals, "activityIntervals");
     }
 

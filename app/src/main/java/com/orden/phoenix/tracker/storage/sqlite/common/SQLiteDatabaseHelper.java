@@ -1,4 +1,4 @@
-package com.orden.phoenix.tracker.storage.sqlite;
+package com.orden.phoenix.tracker.storage.sqlite.common;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,13 +15,19 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createQuery = "CREATE TABLE " + SQLiteTaskFactory.TASKS_TABLE_NAME +
+        String createTasksQuery = "CREATE TABLE " + DBResources.TASKS_TABLE_NAME +
                 "(_id INTEGER primary key autoincrement," +
                 "name TEXT, " +
                 "description TEXT," +
                 "parentId INTEGER," +
                 "estimate INTEGER);";
-        db.execSQL(createQuery);
+        db.execSQL(createTasksQuery);
+
+        String createIntervalsQuery = "CREATE TABLE " + DBResources.TIME_INTERVALS_TABLE_NAME +
+                "(_id INTEGER primary key autoincrement," +
+                "to TEXT, " +
+                "from TEXT);";
+        db.execSQL(createIntervalsQuery);
     }
 
     @Override
