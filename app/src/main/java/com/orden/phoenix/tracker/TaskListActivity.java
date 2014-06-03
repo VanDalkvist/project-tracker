@@ -26,10 +26,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import roboguice.RoboGuice;
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
+@ContentView(R.layout.activity_task_list)
 public class TaskListActivity extends RoboActivity {
     private static ConsoleLogger logger = new ConsoleLogger("Project-Tracker");
 
@@ -45,16 +46,9 @@ public class TaskListActivity extends RoboActivity {
 
         super.onCreate(savedInstanceState);
 
-        //inject();
-
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        setContentView(R.layout.activity_task_list);
         init();
-    }
-
-    private void inject() {
-        RoboGuice.getInjector(this).injectViewMembers(this);
     }
 
     private void init() {
@@ -71,9 +65,8 @@ public class TaskListActivity extends RoboActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (RESULT_OK != resultCode) {
-            return;
-        }
+        if (RESULT_OK != resultCode) return;
+
         switch (requestCode) {
             case R.id.action_new:
                 addTask((TaskViewModel) data.getSerializableExtra(EditTaskActivity.TASK_EXTRA));

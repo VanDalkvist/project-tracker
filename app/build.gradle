@@ -25,6 +25,7 @@ dependencies {
             'com.android.support:support-v4:+',
             'com.google.code.gson:gson:2.2.+',
             'org.modelmapper:modelmapper:0.6.+',
+            'com.google.inject:guice:4.0-beta:no_aop',
             'org.roboguice:roboguice:2.0'
     )
 }
