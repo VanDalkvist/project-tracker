@@ -9,8 +9,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.orden.phoenix.tracker.R;
-import com.orden.phoenix.tracker.presentation.behavior.ChangeStateContext;
-import com.orden.phoenix.tracker.presentation.behavior.SwitchChangeStateBehavior;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewItemState;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 
@@ -48,13 +46,6 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
         viewHolder.getNameText().setText(item.getName());
         viewHolder.getTimeSpentText().setText(convertMillsToString(item.getTimeSpent()));
         viewHolder.getExpandIcon().setVisibility(item.getChildren().isEmpty() ? View.INVISIBLE : View.VISIBLE);
-        viewHolder.getExpandIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // todo: configure ChangeStateBehavior in config;
-                new SwitchChangeStateBehavior().change(item, new ChangeStateContext(TaskAdapter.this));
-            }
-        });
         viewHolder.getExpandIcon().setDirection(item.getViewState() == TaskViewItemState.COLLAPSED ? TriangleView.Direction.WEST : TriangleView.Direction.SOUTH);
     }
 

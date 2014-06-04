@@ -13,6 +13,8 @@ import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
+import com.orden.phoenix.tracker.presentation.behavior.ChangeStateContext;
+import com.orden.phoenix.tracker.presentation.behavior.SwitchChangeStateBehavior;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 import com.orden.phoenix.tracker.presentation.viewmodel.TimeIntervalViewModel;
@@ -57,6 +59,13 @@ public class TaskListActivity extends RoboActivity {
         adapter = new TaskAdapter(this, R.layout.activity_task_list, new ArrayList<TaskViewModel>());
 
         taskListView.setAdapter(adapter);
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // todo: configure ChangeStateBehavior in config;
+                new SwitchChangeStateBehavior().change(adapter.getItem(position), new ChangeStateContext(adapter));
+            }
+        });
         registerForContextMenu(taskListView);
 
         logger.d("Activity initiate process finished.");
