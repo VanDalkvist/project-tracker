@@ -1,7 +1,5 @@
 package com.orden.phoenix.tracker.storage;
 
-import com.orden.phoenix.tracker.model.Task;
-
 import java.util.List;
 
 /**
@@ -9,5 +7,5 @@ import java.util.List;
  */
 public interface TreeStorableFactory<T extends TreeStorable> extends StorableFactory<T> {
 
-    List<Task> findChildren(String parentId) throws DatabaseException;
+    List<T> findChildren(String parentId) throws DatabaseException;
 }

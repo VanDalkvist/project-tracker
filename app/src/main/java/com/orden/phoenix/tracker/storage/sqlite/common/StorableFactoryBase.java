@@ -41,6 +41,60 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
         database.close();
     }
 
+    @Override
+    public long create(T item) throws DatabaseException {
+        try {
+            open();
+            long insertedId = database.insert(getTableName(), null, prepareEntity(item));
+            item.setId(Long.toString(insertedId));
+            return insertedId;
+        } catch (SQLiteException e) {
+            throw new DatabaseException(e);
+        } finally {
+            close();
+        }
+    }
+
+    @Override
+    public void update(T item) throws DatabaseException {
+        try {
+            open();
+            database.update(getTableName(), prepareEntity(item), "_id=" + item.getId(), null);
+        } catch (SQLiteException e) {
+            throw new DatabaseException(e);
+        } finally {
+            close();
+        }
+    }
+
+    @Override
+    public T findById(String id) throws DatabaseException {
+        try {
+            open();
+            List<T> result = readList(database.query(getTableName(), null, "_id=" + id, null, null, null, null));
+            return result.isEmpty() ? null : result.get(0);
+        } finally {
+            close();
+        }
+    }
+
+    @Override
+    public List<T> findAll() throws DatabaseException {
+        try {
+            open();
+            return readList(database.query(getTableName(), null, null, null, null, null, null));
+        } finally {
+            close();
+        }
+    }
+
+    @Override
+    public void delete(String id) throws DatabaseException {
+        open();
+        database.delete(getTableName(), "_id=" + id, null);
+        close();
+    }
+
     /**
      * Prepares DTO to be written to database
      *
@@ -71,4 +125,6 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
      * @return converted result
      */
     protected abstract T read(Cursor cursor);
+
+    protected abstract String getTableName();
 }

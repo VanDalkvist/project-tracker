@@ -5,4 +5,5 @@ package com.orden.phoenix.tracker.storage;
  */
 public interface Storable {
     String getId();
+    void setId(String id);
 }
