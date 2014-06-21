@@ -24,8 +24,8 @@ public class SQLiteTimeIntervalFactory extends StorableFactoryBase<TimeInterval>
     @Override
     protected ContentValues prepareEntity(TimeInterval interval) {
         ContentValues entity = new ContentValues();
-        entity.put("from_time", interval.getFrom().getTime());
-        entity.put("to_time", interval.getTo().getTime());
+        entity.put("fromTime", interval.getFrom().getTime());
+        entity.put("toTime", interval.getTo().getTime());
         return entity;
     }
 
@@ -34,8 +34,8 @@ public class SQLiteTimeIntervalFactory extends StorableFactoryBase<TimeInterval>
         TimeInterval result = new TimeInterval();
 
         result.setId(cursor.getString(cursor.getColumnIndex("_id")));
-        result.setFrom(new Date(cursor.getLong(cursor.getColumnIndex("from_time"))));
-        result.setTo(new Date(cursor.getLong(cursor.getColumnIndex("to_time"))));
+        result.setFrom(new Date(cursor.getLong(cursor.getColumnIndex("fromTime"))));
+        result.setTo(new Date(cursor.getLong(cursor.getColumnIndex("toTime"))));
 
         return result;
     }
