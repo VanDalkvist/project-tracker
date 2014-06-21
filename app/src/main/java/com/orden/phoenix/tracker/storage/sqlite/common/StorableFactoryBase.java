@@ -48,12 +48,6 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
     }
 
     protected SQLiteDatabaseHelper getDatabaseHelper() {
-        if (databaseOpenHelper != null) {
-            return databaseOpenHelper;
-        }
-
-        databaseOpenHelper = databaseHelperProvider.get();
-
         return databaseOpenHelper;
     }
 
