@@ -1,7 +1,5 @@
 package com.orden.phoenix.tracker.storage.sqlite.common;
 
-import android.content.Context;
-
 import com.orden.phoenix.tracker.storage.DatabaseException;
 import com.orden.phoenix.tracker.storage.TreeStorable;
 import com.orden.phoenix.tracker.storage.TreeStorableFactory;
@@ -17,8 +15,8 @@ public abstract class TreeStorableFactoryBase<T extends TreeStorable>
         extends StorableFactoryBase<T>
         implements TreeStorableFactory<T> {
 
-    public TreeStorableFactoryBase(Context context) {
-        super(context);
+    public TreeStorableFactoryBase() {
+        super();
     }
 
     @Override

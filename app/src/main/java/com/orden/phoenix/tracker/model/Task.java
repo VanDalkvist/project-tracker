@@ -14,8 +14,6 @@ public class Task implements TreeStorable {
     private String name;
     private TaskState state;
     private String description;
-    // TODO change to list of time interval ids
-    private List<TimeInterval> activityIntervals = new ArrayList<TimeInterval>();
     private long estimate;
     private List<String> tags = new ArrayList<String>();
     // TODO change to list of node ids
@@ -79,14 +77,6 @@ public class Task implements TreeStorable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<TimeInterval> getActivityIntervals() {
-        return activityIntervals;
-    }
-
-    public void setActivityIntervals(List<TimeInterval> activityIntervals) {
-        this.activityIntervals = activityIntervals;
     }
 
     public long getEstimate() {

@@ -1,11 +1,11 @@
 package com.orden.phoenix.tracker.storage.sqlite.common;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.google.inject.Inject;
 import com.orden.phoenix.tracker.storage.DatabaseException;
 import com.orden.phoenix.tracker.storage.Storable;
 import com.orden.phoenix.tracker.storage.StorableFactory;
@@ -20,16 +20,14 @@ import java.util.List;
  */
 public abstract class StorableFactoryBase<T extends Storable> implements StorableFactory<T> {
 
-    protected SQLiteDatabase database;
-    protected SQLiteDatabaseHelper databaseOpenHelper;
-
-    public StorableFactoryBase(Context context) {
-        databaseOpenHelper = new SQLiteDatabaseHelper(context, DBResources.DB_NAME, null, DBResources.DB_CURRENT_VERSION);
-    }
+    @Inject
+    private static DatabaseHelperProvider databaseHelperProvider;
+    private SQLiteDatabase database;
+    private SQLiteDatabaseHelper databaseOpenHelper;
 
     protected void open() throws DatabaseException {
         try {
-            database = databaseOpenHelper.getWritableDatabase();
+            database = getDatabaseHelper().getWritableDatabase();
         } catch (SQLiteException e) {
             throw new DatabaseException(e);
         }
@@ -39,6 +37,20 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
         if (database == null) return;
 
         database.close();
+    }
+
+    protected SQLiteDatabase getDatabase() {
+        return database;
+    }
+
+    protected SQLiteDatabaseHelper getDatabaseHelper() {
+        if (databaseOpenHelper != null) {
+            return databaseOpenHelper;
+        }
+
+        databaseOpenHelper = databaseHelperProvider.get();
+
+        return databaseOpenHelper;
     }
 
     @Override

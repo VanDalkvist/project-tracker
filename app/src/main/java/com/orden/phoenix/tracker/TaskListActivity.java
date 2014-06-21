@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.inject.Inject;
 import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Task;
@@ -19,7 +20,7 @@ import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 import com.orden.phoenix.tracker.presentation.viewmodel.TimeIntervalViewModel;
 import com.orden.phoenix.tracker.storage.DatabaseException;
-import com.orden.phoenix.tracker.storage.StorageProvider;
+import com.orden.phoenix.tracker.storage.TreeStorableFactory;
 import com.orden.phoenix.tracker.utils.ConsoleLogger;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
@@ -41,6 +42,12 @@ public class TaskListActivity extends RoboActivity {
 
     @InjectView(R.id.taskListView)
     private ListView taskListView;
+
+    @Inject
+    private TaskMapper taskMapper;
+
+    @Inject
+    private TreeStorableFactory<Task> taskFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +92,8 @@ public class TaskListActivity extends RoboActivity {
                     TaskViewModel editedTask = (TaskViewModel)
                             data.getSerializableExtra(EditTaskActivity.TASK_EXTRA);
                     selectedItem.merge(editedTask);
-                    StorageProvider.getInstance().getTaskFactory(this).update(
-                            new TaskMapper().toDto(selectedItem));
+                    taskFactory.update(
+                            taskMapper.toDto(selectedItem));
                     adapter.notifyDataSetChanged();
                 } catch (DatabaseException e) {
                     ExceptionHandler.logException(e, this.getPackageName());
@@ -149,10 +156,9 @@ public class TaskListActivity extends RoboActivity {
         new GetTasksCommand(this, null, new GetTasksCommand.Callback() {
             @Override
             public void call(List<Task> result) {
-                TaskMapper mapper = new TaskMapper();
                 adapter.clear();
                 for (Task dto : result) {
-                    TaskViewModel item = mapper.fromDto(dto);
+                    TaskViewModel item = taskMapper.fromDto(dto);
                     adapter.add(item);
                     item.loadChildren(adapter);
                 }

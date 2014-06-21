@@ -45,7 +45,7 @@ public class TaskAdapter extends ArrayAdapter<TaskViewModel> {
         viewHolder.getStateBox().setChecked(item.isFinished());
         viewHolder.getNameText().setText(item.getName());
         viewHolder.getTimeSpentText().setText(convertMillsToString(item.getTimeSpent()));
-        viewHolder.getExpandIcon().setVisibility(item.getChildren().isEmpty() ? View.INVISIBLE : View.VISIBLE);
+        viewHolder.getExpandIcon().setVisibility(item.getChildrenCount() == 0 ? View.INVISIBLE : View.VISIBLE);
         viewHolder.getExpandIcon().setDirection(item.getViewState() == TaskViewItemState.COLLAPSED ? TriangleView.Direction.WEST : TriangleView.Direction.SOUTH);
     }
 

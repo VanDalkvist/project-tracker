@@ -23,7 +23,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         exception.printStackTrace(new PrintWriter(stackTrace));
 
         logger.e(tag
-                + ": "
+                + ": \n"
                 + "************ CAUSE OF ERROR ************\n\n"
                 + stackTrace.toString()
                 + "\n************ DEVICE INFORMATION ***********\n"

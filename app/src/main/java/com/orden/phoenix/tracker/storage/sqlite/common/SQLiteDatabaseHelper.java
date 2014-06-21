@@ -25,9 +25,15 @@ public class SQLiteDatabaseHelper extends SQLiteOpenHelper {
 
         String createIntervalsQuery = "CREATE TABLE " + DBResources.TIME_INTERVALS_TABLE_NAME +
                 "(_id INTEGER primary key autoincrement," +
-                "to_time INTEGER, " +
-                "from_time INTEGER);";
+                "toTime INTEGER, " +
+                "fromTime INTEGER);";
         db.execSQL(createIntervalsQuery);
+
+        String createTaskIntervalRelationsQuery = "CREATE TABLE " + DBResources.TASKS_INTERVAL_RELATIONS_TABLE_NAME +
+                "(_id INTEGER primary key autoincrement," +
+                "taskId INTEGER, " +
+                "intervalId INTEGER);";
+        db.execSQL(createTaskIntervalRelationsQuery);
     }
 
     @Override

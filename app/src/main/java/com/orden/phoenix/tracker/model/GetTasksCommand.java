@@ -3,8 +3,8 @@ package com.orden.phoenix.tracker.model;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.orden.phoenix.tracker.presentation.infrastructure.Infrastructure;
 import com.orden.phoenix.tracker.storage.DatabaseException;
-import com.orden.phoenix.tracker.storage.StorageProvider;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
 import java.util.Collections;
@@ -27,7 +27,7 @@ public class GetTasksCommand extends AsyncTask<Object, Object, List<Task>> {
     @Override
     protected List<Task> doInBackground(Object... params) {
         try {
-            return StorageProvider.getInstance().getTaskFactory(context).findChildren(parentId);
+            return Infrastructure.getInstance().getTaskFactory().findChildren(parentId);
         } catch (DatabaseException e) {
             ExceptionHandler.logException(e, context.getPackageName());
             return Collections.emptyList();

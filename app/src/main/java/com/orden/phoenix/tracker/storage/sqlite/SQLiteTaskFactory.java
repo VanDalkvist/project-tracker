@@ -1,7 +1,6 @@
 package com.orden.phoenix.tracker.storage.sqlite;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
 import com.orden.phoenix.tracker.model.Task;
@@ -13,8 +12,8 @@ import com.orden.phoenix.tracker.storage.sqlite.common.TreeStorableFactoryBase;
  */
 public class SQLiteTaskFactory extends TreeStorableFactoryBase<Task> {
 
-    public SQLiteTaskFactory(Context context) {
-        super(context);
+    public SQLiteTaskFactory() {
+        super();
     }
 
     /**

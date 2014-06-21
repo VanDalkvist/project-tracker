@@ -20,7 +20,6 @@ public class TaskMock {
         Task model = new Task();
         model.setName(name);
         model.setState(TaskState.CREATED);
-        model.setActivityIntervals(getStartIntervals());
         model.setEstimate(5);
         model.setDescription("description");
         model.setId(Integer.toString(id));

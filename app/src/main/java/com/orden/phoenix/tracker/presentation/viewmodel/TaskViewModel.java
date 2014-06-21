@@ -1,14 +1,15 @@
 package com.orden.phoenix.tracker.presentation.viewmodel;
 
+import com.google.inject.Inject;
 import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Note;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
+import com.orden.phoenix.tracker.presentation.infrastructure.Infrastructure;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.storage.DatabaseException;
 import com.orden.phoenix.tracker.storage.StorableFactory;
-import com.orden.phoenix.tracker.storage.StorageProvider;
 import com.orden.phoenix.tracker.utils.ExceptionHandler;
 
 import java.util.ArrayList;
@@ -18,9 +19,12 @@ import java.util.List;
 /**
  * Created on 4/19/14.
  *
- * @author Alex
+ * @author Alex, I_van
  */
 public class TaskViewModel extends AbstractViewModel {
+    // todo: move mapping and other data manipulation to own task controller
+    @Inject
+    private static TaskMapper taskMapper;
     protected String name;
     protected String description;
     protected long estimate;
@@ -32,16 +36,13 @@ public class TaskViewModel extends AbstractViewModel {
     protected TaskViewModel parent;
     protected List<TaskViewModel> children = Collections.synchronizedList(new ArrayList<TaskViewModel>());
 
-    public TaskViewModel() {
-    }
-
-    private static void saveEntity(TaskViewModel node, TaskMapper mapper, StorableFactory<Task> taskFactory) throws DatabaseException {
-        Task dto = mapper.toDto(node);
+    private static void saveEntity(TaskViewModel node, StorableFactory<Task> taskFactory) throws DatabaseException {
+        Task dto = taskMapper.toDto(node);
         taskFactory.create(dto);
         // after creation in db id will be set
         node.setId(dto.getId());
         for (TaskViewModel child : node.getChildren()) {
-            saveEntity(child, mapper, taskFactory);
+            saveEntity(child, taskFactory);
         }
     }
 
@@ -75,9 +76,8 @@ public class TaskViewModel extends AbstractViewModel {
         new GetTasksCommand(adapter.getContext(), getId(), new GetTasksCommand.Callback() {
             @Override
             public void call(List<Task> result) {
-                TaskMapper mapper = new TaskMapper();
                 for (Task dto : result) {
-                    TaskViewModel.this.addChild(mapper.fromDto(dto));
+                    TaskViewModel.this.addChild(taskMapper.fromDto(dto));
                 }
                 // update icon
                 if (!result.isEmpty()) {
@@ -89,7 +89,7 @@ public class TaskViewModel extends AbstractViewModel {
 
     public void createWithChildren(TaskAdapter adapter) {
         try {
-            saveEntity(this, new TaskMapper(), StorageProvider.getInstance().getTaskFactory(adapter.getContext()));
+            saveEntity(this, Infrastructure.getInstance().getTaskFactory());
             if (isRoot()) {
                 adapter.add(this);
             } else {
@@ -102,13 +102,12 @@ public class TaskViewModel extends AbstractViewModel {
 
     public void deleteWithChildren(TaskAdapter adapter) {
         try {
-            deleteEntity(this, StorageProvider.getInstance().getTaskFactory(adapter.getContext()));
+            deleteEntity(this, Infrastructure.getInstance().getTaskFactory());
             viewState.onCollapse(this, adapter);
             adapter.remove(this);
         } catch (DatabaseException e) {
             ExceptionHandler.logException(e, adapter.getContext().getPackageName());
         }
-
     }
 
     public boolean isRoot() {
@@ -190,6 +189,10 @@ public class TaskViewModel extends AbstractViewModel {
 
     public List<TaskViewModel> getChildren() {
         return Collections.unmodifiableList(children);
+    }
+
+    public int getChildrenCount() {
+        return children.size();
     }
 
     public TaskViewModel getParent() {

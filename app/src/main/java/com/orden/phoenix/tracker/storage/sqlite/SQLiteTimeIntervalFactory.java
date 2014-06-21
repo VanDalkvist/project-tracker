@@ -18,7 +18,7 @@ import java.util.Date;
 public class SQLiteTimeIntervalFactory extends StorableFactoryBase<TimeInterval> {
 
     public SQLiteTimeIntervalFactory(Context context) {
-        super(context);
+        super();
     }
 
     @Override
