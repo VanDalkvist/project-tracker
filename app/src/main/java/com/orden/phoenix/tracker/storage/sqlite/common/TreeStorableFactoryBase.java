@@ -23,7 +23,7 @@ public abstract class TreeStorableFactoryBase<T extends TreeStorable>
     public List<T> findChildren(String parentId) throws DatabaseException {
         try {
             open();
-            return readList(database.query(getTableName(), null, parentId == null ? "parentId is null" : "parentId=" + parentId, null, null, null, null));
+            return readList(getDatabase().query(getTableName(), null, parentId == null ? "parentId is null" : "parentId=" + parentId, null, null, null, null));
         } finally {
             close();
         }

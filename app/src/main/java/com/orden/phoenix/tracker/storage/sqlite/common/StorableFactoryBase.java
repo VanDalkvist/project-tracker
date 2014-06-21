@@ -25,6 +25,10 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
     private SQLiteDatabase database;
     private SQLiteDatabaseHelper databaseOpenHelper;
 
+    public StorableFactoryBase() {
+        databaseOpenHelper = databaseHelperProvider.get();
+    }
+
     protected void open() throws DatabaseException {
         try {
             database = getDatabaseHelper().getWritableDatabase();
