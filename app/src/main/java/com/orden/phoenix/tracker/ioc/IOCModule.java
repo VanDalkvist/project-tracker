@@ -3,6 +3,8 @@ package com.orden.phoenix.tracker.ioc;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
+import com.orden.phoenix.tracker.mapping.Mapper;
+import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.presentation.infrastructure.Infrastructure;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
@@ -31,6 +33,8 @@ public class IOCModule implements Module {
 
         binder.bind(new TypeLiteral<TreeStorableFactory<Task>>() {
         }).to(SQLiteTaskFactory.class);
+        binder.bind(new TypeLiteral<Mapper<Task, TaskViewModel>>() {
+        }).to(TaskMapper.class);
     }
 
     private ModelMapper configureMapper() {

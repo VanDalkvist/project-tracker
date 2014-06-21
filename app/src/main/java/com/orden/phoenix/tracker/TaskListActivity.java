@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
-import com.orden.phoenix.tracker.mapping.TaskMapper;
+import com.orden.phoenix.tracker.mapping.Mapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
@@ -44,7 +44,7 @@ public class TaskListActivity extends RoboActivity {
     private ListView taskListView;
 
     @Inject
-    private TaskMapper taskMapper;
+    private Mapper<Task, TaskViewModel> taskMapper;
 
     @Inject
     private TreeStorableFactory<Task> taskFactory;

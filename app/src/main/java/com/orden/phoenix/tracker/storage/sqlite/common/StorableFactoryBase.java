@@ -22,6 +22,7 @@ public abstract class StorableFactoryBase<T extends Storable> implements Storabl
 
     @Inject
     private static DatabaseHelperProvider databaseHelperProvider;
+
     private SQLiteDatabase database;
     private SQLiteDatabaseHelper databaseOpenHelper;
 

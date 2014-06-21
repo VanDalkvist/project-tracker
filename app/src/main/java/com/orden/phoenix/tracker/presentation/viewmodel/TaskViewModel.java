@@ -1,7 +1,5 @@
 package com.orden.phoenix.tracker.presentation.viewmodel;
 
-import com.google.inject.Inject;
-import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.GetTasksCommand;
 import com.orden.phoenix.tracker.model.Note;
 import com.orden.phoenix.tracker.model.Task;
@@ -22,9 +20,7 @@ import java.util.List;
  * @author Alex, I_van
  */
 public class TaskViewModel extends AbstractViewModel {
-    // todo: move mapping and other data manipulation to own task controller
-    @Inject
-    private static TaskMapper taskMapper;
+
     protected String name;
     protected String description;
     protected long estimate;
@@ -36,8 +32,9 @@ public class TaskViewModel extends AbstractViewModel {
     protected TaskViewModel parent;
     protected List<TaskViewModel> children = Collections.synchronizedList(new ArrayList<TaskViewModel>());
 
+    // todo: move mapping and other data manipulation to own task controller
     private static void saveEntity(TaskViewModel node, StorableFactory<Task> taskFactory) throws DatabaseException {
-        Task dto = taskMapper.toDto(node);
+        Task dto = Infrastructure.getInstance().getTaskMapper().toDto(node);
         taskFactory.create(dto);
         // after creation in db id will be set
         node.setId(dto.getId());
@@ -77,7 +74,7 @@ public class TaskViewModel extends AbstractViewModel {
             @Override
             public void call(List<Task> result) {
                 for (Task dto : result) {
-                    TaskViewModel.this.addChild(taskMapper.fromDto(dto));
+                    TaskViewModel.this.addChild(Infrastructure.getInstance().getTaskMapper().fromDto(dto));
                 }
                 // update icon
                 if (!result.isEmpty()) {

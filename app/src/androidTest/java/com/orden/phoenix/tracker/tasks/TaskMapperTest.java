@@ -2,11 +2,13 @@ package com.orden.phoenix.tracker.tasks;
 
 import android.test.InstrumentationTestCase;
 
+import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.mocks.TaskMock;
 import com.orden.phoenix.tracker.mocks.TaskViewModelMock;
-import com.orden.phoenix.tracker.mapping.TaskMapper;
 import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
+
+import org.modelmapper.ModelMapper;
 
 /**
  * Created by I_van on 25.05.2014.
@@ -18,7 +20,7 @@ public class TaskMapperTest extends InstrumentationTestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        taskMapper = new TaskMapper();
+        taskMapper = new TaskMapper(new ModelMapper());
     }
 
     public void testMapToDto() {
