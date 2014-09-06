@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.orden.phoenix.tracker.presentation.view.TriangleView
+        android:id="@+id/taskListMoveUp"
+        style="@style/ModifyTaskListArrowStyle"
+        app:size="@dimen/taskListModifyTriangleSize"
+        app:color="@color/taskArrowColor"
+        app:direction="north"/>
+    <com.orden.phoenix.tracker.presentation.view.TriangleView
+        android:id="@+id/taskListMoveDown"
+        style="@style/ModifyTaskListArrowStyle"
+        app:size="@dimen/taskListModifyTriangleSize"
+        app:color="@color/taskArrowColor"
+        app:direction="south"/>
+    <com.orden.phoenix.tracker.presentation.view.TriangleView
+        android:id="@+id/taskListMoveLeft"
+        style="@style/ModifyTaskListArrowStyle"
+        app:size="@dimen/taskListModifyTriangleSize"
+        app:color="@color/taskArrowColor"
+        app:direction="east"/>
+    <com.orden.phoenix.tracker.presentation.view.TriangleView
+        android:id="@+id/taskListMoveRight"
+        style="@style/ModifyTaskListArrowStyle"
+        app:size="@dimen/taskListModifyTriangleSize"
+        app:color="@color/taskArrowColor"
+        app:direction="west"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/taskListModifyOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/task_list_modify_ok_label"/>
+</LinearLayout>

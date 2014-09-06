@@ -3,10 +3,13 @@ package com.orden.phoenix.tracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
@@ -16,6 +19,7 @@ import com.orden.phoenix.tracker.model.Task;
 import com.orden.phoenix.tracker.model.TaskState;
 import com.orden.phoenix.tracker.presentation.behavior.ChangeStateContext;
 import com.orden.phoenix.tracker.presentation.behavior.SwitchChangeStateBehavior;
+import com.orden.phoenix.tracker.presentation.view.BlankFragment;
 import com.orden.phoenix.tracker.presentation.view.TaskAdapter;
 import com.orden.phoenix.tracker.presentation.viewmodel.TaskViewModel;
 import com.orden.phoenix.tracker.presentation.viewmodel.TimeIntervalViewModel;
@@ -29,12 +33,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
+import roboguice.fragment.RoboFragment;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_task_list)
-public class TaskListActivity extends RoboActivity {
+public class TaskListActivity extends RoboFragmentActivity {
+    private static final int CREATE_ACTION_CODE = 1;
+    private static final int EDIT_ACTION_CODE = 2;
     private static ConsoleLogger logger = new ConsoleLogger("Project-Tracker");
 
     private TaskAdapter adapter;
@@ -57,10 +64,10 @@ public class TaskListActivity extends RoboActivity {
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
-        init();
+        init(savedInstanceState);
     }
 
-    private void init() {
+    private void init(Bundle savedInstanceState) {
         logger.d("Activity initiate process started.");
 
         adapter = new TaskAdapter(this, R.layout.activity_task_list, new ArrayList<TaskViewModel>());
@@ -75,6 +82,15 @@ public class TaskListActivity extends RoboActivity {
         });
         registerForContextMenu(taskListView);
 
+        // fill fragment placeholder with empty fragment
+        if (findViewById(R.id.modifyTaskListPanelContainer) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.modifyTaskListPanelContainer, new BlankFragment()).commit();
+        }
+
         logger.d("Activity initiate process finished.");
     }
 
@@ -84,10 +100,10 @@ public class TaskListActivity extends RoboActivity {
         if (RESULT_OK != resultCode) return;
 
         switch (requestCode) {
-            case R.id.action_new:
+            case CREATE_ACTION_CODE:
                 addTask((TaskViewModel) data.getSerializableExtra(EditTaskActivity.TASK_EXTRA));
                 break;
-            case R.id.action_edit:
+            case EDIT_ACTION_CODE:
                 try {
                     TaskViewModel editedTask = (TaskViewModel)
                             data.getSerializableExtra(EditTaskActivity.TASK_EXTRA);
@@ -114,7 +130,7 @@ public class TaskListActivity extends RoboActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                goToEditTaskActivity(selectedItem, R.id.action_edit);
+                goToEditTaskActivity(selectedItem, EDIT_ACTION_CODE);
                 break;
             case R.id.action_remove:
                 removeTask(selectedItem);
@@ -137,17 +153,20 @@ public class TaskListActivity extends RoboActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_new:
-                goToEditTaskActivity(new TaskViewModel(), R.id.action_new);
-                return true;
+                goToEditTaskActivity(new TaskViewModel(), CREATE_ACTION_CODE);
+                break;
             // TODO remove, test menu
             case R.id.action_generate_test:
                 addTask(getDefaultTaskViewModel("name 1", 3, 4));
                 addTask(getDefaultTaskViewModel("name 2", 3, 4));
                 addTask(getDefaultTaskViewModel("name 3", 3, 4));
-                return true;
+                break;
+            case R.id.action_modify_mode:
+                enableModifyMode();
+                break;
             default:
-                return true;
         }
+        return true;
     }
 
     @Override
@@ -204,5 +223,50 @@ public class TaskListActivity extends RoboActivity {
         interval.setFrom(new Date());
         activityIntervals.add(interval);
         return activityIntervals;
+    }
+
+    private void enableModifyMode() {
+        ModifyTaskListFragment fragment = new ModifyTaskListFragment();
+        fragment.setParentActivity(this);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.modifyTaskListPanelContainer, fragment)
+                .addToBackStack(null).commit();
+    }
+
+    private void disableModifyMode() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public static class ModifyTaskListFragment extends RoboFragment {
+        private TaskListActivity parentActivity;
+        @InjectView(R.id.taskListModifyOK)
+        private Button okButton;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.modify_task_list_fragment, container, false);
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            init();
+        }
+
+        private void init() {
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    parentActivity.disableModifyMode();
+                }});
+        }
+
+        public TaskListActivity getParentActivity() {
+            return parentActivity;
+        }
+
+        public void setParentActivity(TaskListActivity parentActivity) {
+            this.parentActivity = parentActivity;
+        }
     }
 }

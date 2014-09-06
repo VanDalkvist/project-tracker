@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
     android:gravity="center"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
@@ -43,12 +42,8 @@
 
     <com.orden.phoenix.tracker.presentation.view.TriangleView
         android:id="@+id/expandIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        app:size="@dimen/taskListItemTriangleSize"
         app:direction="east"
         app:color="@color/taskArrowColor"
-        app:size="@dimen/taskListItemTriangleSize"
-        android:minWidth="@dimen/taskListItemTriangleSize"
-        android:minHeight="@dimen/taskListItemTriangleSize"/>
+        style="@style/ListItemArrowStyle"/>
 </LinearLayout>

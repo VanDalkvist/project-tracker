@@ -11,6 +11,10 @@
     <string name="action_edit_task">Edit</string>
     <string name="action_remove_task">Remove</string>
     <string name="action_generate_tasks">Generate sample</string>
+    <string name="action_modify_mode">Modify</string>
+
+    <!--task list activity-->
+    <string name="task_list_modify_ok_label">OK</string>
 
     <!--edit task activity strings-->
     <string name="edit_task_name_label">Name</string>
