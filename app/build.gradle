@@ -1,11 +1,11 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 20
     buildToolsVersion '19.1.0'
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName '1.0'
     }
@@ -20,12 +20,9 @@ android {
 }
 
 dependencies {
-    compile('com.android.support:support-v13:+',
-            'com.android.support:appcompat-v7:+',
-            'com.android.support:support-v4:+',
-            'com.google.code.gson:gson:2.2.+',
-            'org.modelmapper:modelmapper:0.6.+',
-            'com.google.inject:guice:4.0-beta:no_aop',
-            'org.roboguice:roboguice:2.0'
-    )
+    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.modelmapper:modelmapper:0.6.5'
+    compile 'com.google.inject:guice:4.0-beta:no_aop'
+    compile 'org.roboguice:roboguice:2.0'
 }

@@ -11,6 +11,7 @@ public class CollapsedTaskViewItemState extends AbstractTaskViewItemState {
     public void onExpand(TaskViewModel item, TaskAdapter adapter) {
         int pos = adapter.getPosition(item);
         for (TaskViewModel child : item.getChildren()) {
+            child.loadChildren(adapter);
             adapter.insert(child, ++pos);
         }
         item.setViewState(TaskViewItemState.EXPANDED);
